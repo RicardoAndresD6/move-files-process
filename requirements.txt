@@ -1,0 +1,8 @@
+pandas #Data manipulation and analysis
+psutil #System and process utilities
+openpyxl #Excel file handling
+speedtest-cli #Estimate internet speed
+colorama #Cross-platform colored terminal text
+mysql-connector-python #MySQL database connector
+
+#pip install -r requirements.txt
