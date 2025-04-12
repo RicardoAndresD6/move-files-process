@@ -22,11 +22,11 @@ UMBRAL_MEMORIA = 90  # %
 TAMANIO_PAQUETE_KB = 10
 
 # Configuración de MySQL
-MYSQL_HOST = 'localhost'
-MYSQL_USER = 'root'
-MYSQL_PASSWORD = '27539153RicD6'
-MYSQL_DATABASE = 'move_file_process'
-MYSQL_TABLE = 'productos'
+MYSQL_HOST = 'localhost'  # Cambia si tu base de datos no está en localhost
+MYSQL_USER = 'your_user'       # Usuario de MySQL
+MYSQL_PASSWORD = 'your_password'  # Contraseña de MySQL
+MYSQL_DATABASE = 'move_file_process'  # Nombre de la base de datos
+MYSQL_TABLE = 'productos'  # Nombre de la tabla
 
 # Crear carpeta destino si no existe
 os.makedirs(CARPETA_DESTINO, exist_ok=True)
