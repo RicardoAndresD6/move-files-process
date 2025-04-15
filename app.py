@@ -52,11 +52,11 @@ def registrar_fila_mysql(fila):
     conexion = conectar_mysql()
     if not conexion:
         return False
-
+    
     cursor = conexion.cursor()
     try:
         # Verificar si el registro ya existe
-        query_verificar = f"SELECT COUNT(*) FROM {MYSQL_TABLE} WHERE CODBARRA = %s"
+        query_verificar = f"SELECT COUNT(*) FROM {MYSQL_TABLE} WHERE cod_barra = %s"
         cursor.execute(query_verificar, (fila['CODBARRA'],))
         existe = cursor.fetchone()[0]
 
@@ -66,10 +66,10 @@ def registrar_fila_mysql(fila):
 
         # Insertar el registro si no existe
         query_insertar = f"""
-        INSERT INTO {MYSQL_TABLE} (CODBARRA, NOMBRE, PRECIO)
-        VALUES (%s, %s, %s)
+        INSERT INTO {MYSQL_TABLE} (num_suc, sku, cod_barra, descripcion, fam, sal_fis_suc, valor)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
         """
-        valores = (fila['CODBARRA'], fila['NOMBRE'], fila['PRECIO'])
+        valores = (fila['NumSuc'], fila['Sku'], fila['CODBARRA'], fila['Descripcion'], fila['Fam'], fila['SalFisSuc'], fila['Valor'])
         cursor.execute(query_insertar, valores)
         conexion.commit()
         print(f"{Fore.GREEN}✅ Registro insertado en MySQL: {valores}")
@@ -141,12 +141,14 @@ def transferir_archivo():
                     if not fila.dropna().empty:
                         df_destino = pd.concat([df_destino, pd.DataFrame([fila])], ignore_index=True)
                         print(f"{Fore.GREEN}✅ Registro transferido CODBARRA={fila['CODBARRA']}")
+                        registrar_fila_mysql(fila)
                 else:
                     print(f"{Fore.YELLOW}⚠️ Registro duplicado ignorado CODBARRA={fila['CODBARRA']}")
             else:
                 if not fila.dropna().empty:
                     df_destino = pd.concat([df_destino, pd.DataFrame([fila])], ignore_index=True)
                     print(f"{Fore.GREEN}✅ Registro transferido (sin validación de duplicado)")
+                    registrar_fila_mysql(fila)
 
             # Guardar progreso en el archivo destino
             df_destino.to_excel(destino, index=False)
